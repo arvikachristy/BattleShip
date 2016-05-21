@@ -14,8 +14,16 @@ public class Application {
 
   private static final String input = "input.txt";
   static Map<Point, Character> coord = new HashMap<>(); //position of the boat
-  ArrayList<Point> boatsList = new ArrayList<>();
+  static Map<Point, String> shipMove = new HashMap<>(); //set up moving boat
+  ArrayList<Point> shotShip = new ArrayList<>();
   static int board;
+
+  public void sunkShip(Point enter){
+    if(coord.containsKey(enter)){
+      shotShip.add(enter);
+      coord.remove(enter);
+    }
+  }
 
   public void moveBoat(Point coordInput, String in){
     char[] inArray = in.toCharArray();
@@ -26,7 +34,6 @@ public class Application {
       newPosition.setLocation(coordInput);
 
       for (Character x : inArray) {
-       System.out.println("dir" + dir +"input" +x);
           if(x=='R') {
             int p=0;
               while(p<rotate.length-1){
@@ -89,21 +96,13 @@ public class Application {
   public void giveChar(String entry){
     //splitting content in input
     String entryNew = entry.replaceAll("\\s+","").replaceAll("\\,","");
-
     for(String x:entryNew.split("\\)")){
       Point newboat = new Point();
       char[] xtoChar = x.toCharArray();
       newboat.setLocation(Character.getNumericValue(xtoChar[1]),Character.getNumericValue(xtoChar[2]));
-      System.out.println(newboat.getLocation());
       coord.put(newboat, xtoChar[3]);
     }
-
-    for (Map.Entry<Point, Character> entryl : coord.entrySet()) {
-      Character value = entryl.getValue();
-      System.out.println(" value " + value);
-    }
   }
-
 
   public int bracketCheck(String enter){ //check if bracket even & return how many ships
     //if error(bracket not equal) or no ship return 0
@@ -136,20 +135,30 @@ public class Application {
     return lines;
   }
 
+
   public static void main(String... args) {
     Application app = new Application();
     List<String> lines;
     lines = app.fileReader(input);
+    //Setting up the board...
     board = Integer.parseInt(lines.get(0));
-
+    //Setting up the ships...
     app.giveChar(lines.get(1));
-    for (Map.Entry<Point, Character> entry : coord.entrySet()) {
-      System.out.println("key=" + entry.getKey() + ", value=" + entry.getValue());
+    //Storing all movements and sunk shots...
+    ArrayList<HashMap<Point,String>> moveStore = new ArrayList<>();//store all movement
+    ArrayList<Point> sunkStore = new ArrayList<>();
+    ValidParan paran = new ValidParan();
+    for(int x=2;x<lines.size();x++){
+      String newLine = lines.get(x).replaceAll("\\s+","");
+      if(newLine.charAt(newLine.length()-1)!= ')'){ //it's a movement
+        for (Map.Entry<Point, String> entry : paran.movementBoat(lines.get(x)).entrySet()) {
+          app.moveBoat(entry.getKey(),entry.getValue());
+        }
+      }
+      else{//it's a sunk!
+        app.sunkShip(paran.sunkBoat(lines.get(x)));
+      }
     }
-    //testing
-    Point poo = new Point();
-    poo.setLocation(0,0);
-    app.moveBoat(poo, "MRMLMM");
 
     for (Map.Entry<Point, Character> entry : coord.entrySet()) {
       System.out.println("key=" + entry.getKey() + ", value=" + entry.getValue());
