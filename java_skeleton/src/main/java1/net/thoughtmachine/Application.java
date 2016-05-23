@@ -7,14 +7,9 @@ import java.util.List;
 public class Application {
 
   private static final String input = "input.txt";
-  private static int board;
   private static ShipStore[][] boardArray;
   private static ArrayList<ShipStore> deadShip = new ArrayList<>();
-  private static int missedShot, noRotate, collision;
-
-  public int getBoard(){
-    return board;
-  }
+  private static int board, missedShot, noRotate, collision;
 
   public void sunkShip(ShipStore coordInput){
     int xDir = coordInput.getX();
