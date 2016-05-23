@@ -37,14 +37,10 @@ public class Application {
       for (Character x : dir) {
           if(x=='R') {
             int p=0;
-              while(p<rotate.length-1){
-                if(initialDir=='W'){
-                  initialDir = 'N';
-                  p=rotate.length-1;
-                }
+              while(p<rotate.length){
                 if (initialDir == rotate[p]) {
-                initialDir = rotate[p + 1];
-                p=rotate.length-1;
+                initialDir = rotate[(p+5)%4];
+                p=rotate.length;
               }
               else{
                 p++;
@@ -54,12 +50,8 @@ public class Application {
         if(x=='L'){
           int p=3;
           while(p>0){
-            if(initialDir=='N'){
-              initialDir = 'W';
-              p=0;
-            }
             if (initialDir == rotate[p]) {
-              initialDir = rotate[p - 1];
+              initialDir = rotate[(p+3)%4];
               p=0;
             }
             else{
@@ -82,7 +74,8 @@ public class Application {
           }
         }
       }
-      if(boardArray[xNew][yNew]==null) {
+      if(boardArray[xNew][yNew]==null || (xDir==xNew && yDir == yNew)) {
+        //if it's just rotate without moving it also falls here
         //assuming if it tries to move to occupied move, it can't so it goes back to its initial spot
         boardArray[xDir][yDir] = null;
         ShipStore finalShip = new ShipStore(xNew, yNew, Character.toString(initialDir));

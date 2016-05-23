@@ -5,8 +5,6 @@ import main.java1.net.thoughtmachine.ValidParan;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
@@ -15,7 +13,6 @@ public class ApplicationTest {
 
   static int board = 15;
   static ShipStore[][] boardArray= new ShipStore[board][board];
-  ArrayList<ShipStore> deadShip = new ArrayList<>();
 
   @Before
   public void setup(){
