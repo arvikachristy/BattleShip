@@ -1,6 +1,6 @@
 BattleShip
 ======
-What this **BattleShip Movement tracker** does is to track the movement of the ships within the game.
+**BattleShip Movement tracker** is a tool to track the movement of the ships within the game input.
 
 ## How it works
 Consider a square board of size N. Each cell can either be empty or be occupied by a ship. The
@@ -21,7 +21,7 @@ end of a move operation.
 Specified by an x- and y-coordinate. If the cell is occupied, that ship is sunk and the cell can
 be occupied by another ship. If there is no ship, nothing happens.
 
-## Output File
+## Result
 The final state of the board is the position of all ships and it states whether it has sunk or not.
 The first line contains the size of the board. The second line contains a list of
 coordinate-and-orientation tuples (initial position of the ships). Any subsequent lines are
@@ -41,5 +41,11 @@ Output:
 
 ```
 
+##Output File and Assumptions
 The output will be displayed on output.txt and states all of the accomplished movements, missing shot or when it tries to shoot an unoccupied spot.
+**Assumption**:
+* Assuming if the user tries to move a boat to an occupied spot, it has to go back to initial spot since it's unavailable
+* Any points that're out of bounds will return an Out of bounds error
+
+
 
