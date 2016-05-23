@@ -10,7 +10,6 @@ import static org.junit.Assert.assertNotEquals;
 
 public class ApplicationTest {
   ValidParan moveTest = new ValidParan();
-
   static int board = 15;
   static ShipStore[][] boardArray= new ShipStore[board][board];
 
