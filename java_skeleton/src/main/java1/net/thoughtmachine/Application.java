@@ -49,10 +49,10 @@ public class Application {
         }
         if(x=='L'){
           int p=3;
-          while(p>0){
+          while(p>=0){
             if (initialDir == rotate[p]) {
               initialDir = rotate[(p+3)%4];
-              p=0;
+              p=-1;
             }
             else{
               p--;
