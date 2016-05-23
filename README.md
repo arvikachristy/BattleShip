@@ -43,7 +43,8 @@ Output:
 
 ##Output File and Assumptions
 The output will be displayed on output.txt and states all of the accomplished movements, missing shot or when it tries to shoot an unoccupied spot.
-**Assumption**:
+
+**Assumptions**:
 * Assuming if the user tries to move a boat to an occupied spot, it has to go back to initial spot since it's unavailable
 * Any points that're out of bounds will return an Out of bounds error
 
