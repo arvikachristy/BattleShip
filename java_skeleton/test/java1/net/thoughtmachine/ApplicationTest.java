@@ -12,7 +12,6 @@ public class ApplicationTest {
   ValidParan moveTest = new ValidParan();
   static int board = 15;
   static ShipStore[][] boardArray= new ShipStore[board][board];
-
   @Before
   public void setup(){
     ShipStore initialShips = new ShipStore(0,3,"E");
