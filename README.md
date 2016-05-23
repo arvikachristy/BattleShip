@@ -42,7 +42,7 @@ Output:
 ```
 
 ##Output File and Assumptions
-The output will be displayed on output.txt and states all of the accomplished movements, missing shot or when it tries to shoot an unoccupied spot.
+The output will be displayed on output.txt and states all of the attempts to move a boat to an occupied spot, move to an empty spot or missing shots
 
 **Assumptions**:
 * Assuming if the user tries to move a boat to an occupied spot, it has to go back to initial spot since it's unavailable
