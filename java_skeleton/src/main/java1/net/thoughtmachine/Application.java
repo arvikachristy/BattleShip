@@ -11,6 +11,7 @@ public class Application {
   private static ArrayList<ShipStore> deadShip = new ArrayList<>();
   private static int board, missedShot, noRotate, collision;
 
+
   public void sunkShip(ShipStore coordInput){
     int xDir = coordInput.getX();
     int yDir = coordInput.getY();
