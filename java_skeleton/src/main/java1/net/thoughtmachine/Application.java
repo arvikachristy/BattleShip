@@ -10,30 +10,34 @@ public class Application {
   private static int board;
   private static ShipStore[][] boardArray;
   private static ArrayList<ShipStore> deadShip = new ArrayList<>();
+  private static int missedShot, noRotate, collision;
 
+  public int getBoard(){
+    return board;
+  }
 
   public void sunkShip(ShipStore coordInput){
-    int xDir = coordInput.getX();//9
-    int yDir = coordInput.getY(); //2
+    int xDir = coordInput.getX();
+    int yDir = coordInput.getY();
     if(boardArray[xDir][yDir] != null) { //if there's a boat to shoot
       deadShip.add(boardArray[xDir][yDir]);
       boardArray[xDir][yDir]=null;
     }
     else{
-      System.out.println("Sorry you didn't shoot anything");
+      missedShot++;
     }
   }
 
   public void moveBoat(ShipStore coordInput){
     char[] rotate = {'N','E','S','W'};
-    int xDir = coordInput.getX();//0
-    int yDir = coordInput.getY(); //0
-    char[] dir = coordInput.getDir().toCharArray(); //M,MRELM
-    if(boardArray[xDir][yDir] != null) { //if coord exist in the list of boats, get its nav
+    int xDir = coordInput.getX();
+    int yDir = coordInput.getY();
+    char[] dir = coordInput.getDir().toCharArray();
+    if(boardArray[xDir][yDir] != null) {
       ShipStore newPosition = new ShipStore(xDir,yDir,boardArray[xDir][yDir].getDir());
-      int xNew = newPosition.getX(); //0 now copy
-      int yNew = newPosition.getY(); //0 now copy
-      char initialDir = newPosition.getDir().charAt(0);//N now copy
+      int xNew = newPosition.getX();
+      int yNew = newPosition.getY();
+      char initialDir = newPosition.getDir().charAt(0);
 
       for (Character x : dir) {
           if(x=='R') {
@@ -69,7 +73,6 @@ public class Application {
           }
         }
         if(x=='M'){
-          //assuming if it hits the wall, it wont do anything
           if(initialDir=='N' && newPosition.getY()+1<= board){
             yNew++;
           }
@@ -84,22 +87,25 @@ public class Application {
           }
         }
       }
-      boardArray[xDir][yDir]= null;
-      ShipStore finalShip = new ShipStore(xNew,yNew,Character.toString(initialDir));
-      boardArray[xNew][yNew] = finalShip;
+      if(boardArray[xNew][yNew]==null) {
+        //assuming if it tries to move to occupied move, it can't so it goes back to its initial spot
+        boardArray[xDir][yDir] = null;
+        ShipStore finalShip = new ShipStore(xNew, yNew, Character.toString(initialDir));
+        boardArray[xNew][yNew] = finalShip;
+      }else {
+        collision++;
+      }
     }
     else{
-      System.out.println("Sorry you did not move or rotate any ship!");
+      noRotate++;
     }
 
   }
 
   public void setBoat(String entry){
     String entryNew = entry.replaceAll("\\s+","").replaceAll("\\(","");
-
     for(String k:entryNew.split("\\)")){
-      String temp = k;
-      for(String i: temp.split("(?<=Alpha)")){
+      for(String i: k.split("(?<=Alpha)")){
           String[] parts = i.split(",");
           ShipStore newShip = new ShipStore(Integer.parseInt(parts[0]), Integer.parseInt(parts[1]), parts[2]);//store the ship located
           boardArray [newShip.getX()][newShip.getY()] = newShip;
@@ -123,7 +129,7 @@ public class Application {
       //Setting up the ships...
       app.setBoat(lines.get(1));
 
-      //storing all move and sunk shots tryout 2
+      //storing all move and sunk shots...
       ValidParan paran = new ValidParan();
 
       for (int x = 2; x < lines.size(); x++) {
@@ -134,9 +140,11 @@ public class Application {
         if (newLine.charAt(newLine.length() - 1) != ')') { //it's a movement
           app.moveBoat(paran.movingShip(lines.get(x)));
         } else {//it's a sunk!
-          app.sunkShip(paran.shootShip(lines.get(3)));
+          app.sunkShip(paran.shootShip(lines.get(x)));
         }
       }
+
+      //Printing result...
       ArrayList<ShipStore> printRes = new ArrayList<>();
       for (int q = 0; q < board; q++) {
         for (int z = 0; z < board; z++) {
@@ -145,6 +153,7 @@ public class Application {
           }
         }
       }
+
       PrintWriter out = new PrintWriter(new FileWriter("output.txt"));
       for (ShipStore f : printRes) {
         out.println("(" + f.getX() + "," + f.getY() + "," + f.getDir() + ")");
@@ -152,7 +161,11 @@ public class Application {
       for (ShipStore m : deadShip) {
         out.println("(" + m.getX() + "," + m.getY() + "," + m.getDir() + ")" + " SUNK");
       }
+      out.println("You tried to move: "+ collision + " boat(s) to an already occupied spot(s)");
+      out.println("You tried to move: "+noRotate+" empty spot(s)");
+      out.println("You have: "+missedShot+" missed shot(s)");
       out.close();
+
     }
   }
 }

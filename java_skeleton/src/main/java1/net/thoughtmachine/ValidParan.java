@@ -1,9 +1,10 @@
 package main.java1.net.thoughtmachine;
 
 /**
- * Created by Vika
+ * Created by Vika on 21/05/2016.
  */
-public class ValidParan extends FileReader {
+
+public class ValidParan{
 
     public ShipStore movingShip(String entry){
         String entryNew = entry.replaceAll("\\s+","").replaceAll("\\(","");

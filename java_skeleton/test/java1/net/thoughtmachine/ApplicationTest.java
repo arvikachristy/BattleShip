@@ -9,7 +9,6 @@ import static org.junit.Assert.assertEquals;
 public class ApplicationTest {
   ValidParan moveTest = new ValidParan();
 
-
   @Test
   public void testMoveParser() {
     int xDir = 0;
